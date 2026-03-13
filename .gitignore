@@ -1,0 +1,28 @@
+# Build directories
+build/
+cmake-build-*/
+*.o
+*.a
+*.so
+*.dll
+*.exe
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Config (kung may sensitive)
+*.conf
