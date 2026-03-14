@@ -1,0 +1,358 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Fully Recursive Autonomous Appium API",
+    "description": "Enterprise-Grade Mobile Automation Server with Post-Quantum Security and 333 Ultra-Nano AI Agents\n\n## System Architecture\n- **333 nano-agents** working in parallel\n- **Post-quantum cryptography** (CRYSTALS-Kyber, Dilithium, Falcon, SPHINCS+)\n- **25% RAM limiter** - prevents system overload\n- **Self-healing** agent swarm with Lyapunov stability\n\n## Base URLs\n- **Appium Server**: [http://localhost:4724](http://localhost:4724)\n- **Metrics Server**: [http://localhost:33000/metrics](http://localhost:33000/metrics)\n- **Health Check**: [http://localhost:33000/health](http://localhost:33000/health)\n\n## Authentication\nAll endpoints require one of:\n- `X-API-Key` header\n- `Authorization: Bearer <token>` header\n- Quantum signature validation\n\nThe source signature `DanFernandezIsTheSourceinHumanForm` is embedded throughout the system.",
+    "version": "4.0.0",
+    "contact": {
+      "name": "Dan Fernandez",
+      "email": "danfernandez9292@gmail.com",
+      "url": "https://github.com/primordialomegazero"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4724",
+      "description": "Local Appium Server"
+    }
+  ],
+  "externalDocs": {
+    "description": "GitHub Repository",
+    "url": "https://github.com/primordialomegazero/Fully-Recursive-Autonomous-Appium"
+  },
+  "tags": [
+    {
+      "name": "Status",
+      "description": "Server status and health checks",
+      "externalDocs": {
+        "description": "Health Endpoint",
+        "url": "http://localhost:33000/health"
+      }
+    },
+    {
+      "name": "Sessions",
+      "description": "WebDriver session management"
+    },
+    {
+      "name": "Elements",
+      "description": "Element finding and interaction"
+    },
+    {
+      "name": "Navigation",
+      "description": "Browser/App navigation commands"
+    },
+    {
+      "name": "Screenshots",
+      "description": "Screen capture"
+    },
+    {
+      "name": "Security",
+      "description": "Post-quantum security endpoints"
+    },
+    {
+      "name": "Metrics",
+      "description": "System metrics and monitoring",
+      "externalDocs": {
+        "description": "Prometheus Metrics",
+        "url": "http://localhost:33000/metrics"
+      }
+    },
+    {
+      "name": "AI Agents",
+      "description": "333 ultra-nano AI agent management"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": ["Status"],
+        "summary": "Server Status",
+        "description": "Returns the current server status and source signature",
+        "responses": {
+          "200": {
+            "description": "Server is running",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "ok" },
+                    "source": { "type": "string", "example": "DanFernandezIsTheSourceinHumanForm" },
+                    "threads": { "type": "integer", "example": 4 }
+                  }
+                }
+              }
+            },
+            "links": {
+              "HealthCheck": {
+                "operationId": "getHealth",
+                "description": "Check system health"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": ["Status", "Metrics"],
+        "summary": "Health Check",
+        "description": "Returns system health status",
+        "externalDocs": {
+          "description": "Live Health Endpoint",
+          "url": "http://localhost:33000/health"
+        },
+        "responses": {
+          "200": {
+            "description": "System healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "healthy" },
+                    "uptime": { "type": "integer", "example": 3600 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "tags": ["Metrics"],
+        "summary": "Prometheus Metrics",
+        "description": "Returns system metrics in Prometheus format",
+        "externalDocs": {
+          "description": "Live Metrics Endpoint",
+          "url": "http://localhost:33000/metrics"
+        },
+        "responses": {
+          "200": {
+            "description": "Metrics in Prometheus format",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wd/hub/session": {
+      "post": {
+        "tags": ["Sessions"],
+        "summary": "Create New Session",
+        "description": "Creates a new WebDriver session with specified capabilities",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "capabilities": {
+                    "type": "object",
+                    "properties": {
+                      "platformName": { "type": "string", "example": "Android" },
+                      "platformVersion": { "type": "string", "example": "12.0" },
+                      "deviceName": { "type": "string", "example": "emulator-5554" },
+                      "app": { "type": "string", "example": "/path/to/app.apk" },
+                      "automationName": { "type": "string", "example": "UiAutomator2" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Session created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sessionId": { "type": "string" },
+                    "capabilities": { "type": "object" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wd/hub/session/{sessionId}/element": {
+      "post": {
+        "tags": ["Elements"],
+        "summary": "Find Element",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "using": { "type": "string", "enum": ["xpath", "id", "class name", "accessibility id"] },
+                  "value": { "type": "string", "example": "//button[@id='submit']" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Element found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "elementId": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wd/hub/session/{sessionId}/element/{elementId}/click": {
+      "post": {
+        "tags": ["Elements"],
+        "summary": "Click Element",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "elementId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Element clicked"
+          }
+        }
+      }
+    },
+    "/security/key/generate": {
+      "post": {
+        "tags": ["Security"],
+        "summary": "Generate Quantum Key Pair",
+        "description": "Generates a post-quantum key pair using CRYSTALS-Kyber",
+        "responses": {
+          "200": {
+            "description": "Key pair generated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "keyId": { "type": "string" },
+                    "algorithm": { "type": "string", "example": "KYBER-1024" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/security/sign/dilithium": {
+      "post": {
+        "tags": ["Security"],
+        "summary": "Sign with Dilithium",
+        "description": "Sign a message using CRYSTALS-Dilithium-5",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": { "type": "string", "example": "Hello Quantum World" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signature generated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "signature": { "type": "string" },
+                    "algorithm": { "type": "string", "example": "DILITHIUM-5" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai/agents/status": {
+      "get": {
+        "tags": ["AI Agents"],
+        "summary": "Agent Swarm Status",
+        "description": "Returns status of all 333 nano-agents",
+        "responses": {
+          "200": {
+            "description": "Agent status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total_agents": { "type": "integer", "example": 333 },
+                    "active_agents": { "type": "integer" },
+                    "idle_agents": { "type": "integer" },
+                    "error_agents": { "type": "integer" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
